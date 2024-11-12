@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:storee/menu.dart';
+import 'package:storee/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());

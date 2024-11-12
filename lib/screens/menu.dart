@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:storee/screens/product_form.dart';
+import 'package:storee/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -85,6 +87,7 @@ class MyHomePage extends StatelessWidget {
           ],
         ),
       ),
+      drawer: const LeftDrawer(),
     );
   }
 }
@@ -148,9 +151,12 @@ class ItemCard extends StatelessWidget {
         onTap: () {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!"))
-            );
+            ..showSnackBar(SnackBar(
+                content: Text("Kamu telah menekan tombol ${item.name}!")));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProductFormPage()),
+          );
         },
         child: Container(
           padding: const EdgeInsets.all(8),
