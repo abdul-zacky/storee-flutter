@@ -14,7 +14,7 @@ Tugas 7
   g. Padding = memberikan space di sekitar atau di dalam widget
   h. Column = menyusun children di dalamnya secara vertikal
   i. Row = menyusun children di dalamnya secara horizontal
-  j. InfoCard = widget yang dibuat sendiri untuk menampilkan informasi berupa `title` dan `content`
+  j. InfoCard = widget yang dibuat sendiri untuk menampilkan informasi berupa title dan content
   k. Card = menampilkan elemen UI dengan efek shadow dan sudut yang round
   l. SizedBox = menyediakan space kosong dengan ukuran tertentu
   m. Center = memusatkan widget di dalamnya
@@ -52,3 +52,52 @@ Saya mengatur crossAxisCount di GridView.count menjadi 3 agar menampilkan 3 kolo
   m. Saya menjalankan aplikasi di emulator atau perangkat fisik untuk melihat hasilnya. Saya memastikan setiap item pada GridView muncul dengan warna yang berbeda dan bisa ditekan untuk memunculkan pesan SnackBar.
   n. Saya memastikan padding dan margin diatur dengan benar agar tampilan aplikasi terlihat rapi di berbagai ukuran layar.
 Saya melakukan pengecekan bahwa aplikasi berjalan lancar tanpa error, dan setiap komponen tampil sesuai desain yang saya inginkan.
+
+
+Tugas 8
+1.  
+Kegunaan const di Flutter dan Keuntungannya  
+   a. const di Flutter digunakan untuk mendeklarasikan nilai yang bersifat konstan dan tidak akan berubah selama aplikasi berjalan. Dengan menggunakan const, Flutter dapat mengoptimalkan memori karena objek yang diinisialisasi dengan const hanya dibuat sekali dan dapat digunakan berulang kali tanpa membuat objek baru.
+   b. Keuntungan menggunakan const adalah meningkatkan efisiensi aplikasi, baik dalam hal performa maupun memori, terutama pada elemen statis yang digunakan secara berulang. Ini membuat aplikasi lebih cepat dan ringan karena Flutter tidak perlu merebuild widget yang menggunakan const.
+   c. Sebaiknya const digunakan pada widget atau nilai yang tidak memerlukan perubahan saat aplikasi berjalan, seperti teks statis, ikon, atau dekorasi tetap. const tidak diperlukan pada widget yang membutuhkan data atau properti dinamis yang berubah-ubah berdasarkan input pengguna atau variabel lain.
+
+2. 
+Perbandingan Column dan Row pada Flutter  
+   a. Column adalah widget yang menyusun children-nya secara vertikal, dari atas ke bawah. Widget ini cocok untuk membuat layout yang menumpuk elemen satu per satu dalam urutan vertikal, misalnya pada form atau daftar teks dan tombol.
+   b. Row adalah widget yang menyusun children-nya secara horizontal, dari kiri ke kanan. Row lebih cocok untuk tata letak yang ingin menampilkan beberapa elemen secara berdampingan, misalnya ikon dan teks di sebelahnya.
+   c. Contoh implementasi:
+     dart
+     Column(
+       children: [
+         Text("Nama Produk"),
+         Text("Deskripsi Produk"),
+         ElevatedButton(onPressed: () {}, child: Text("Beli Sekarang"))
+       ],
+     );
+     
+     Row(
+       children: [
+         Icon(Icons.star),
+         Text("Rating: 5.0"),
+         ElevatedButton(onPressed: () {}, child: Text("Lihat Review"))
+       ],
+     );
+     
+
+3. 
+Elemen Input yang Digunakan di Halaman Form  
+   a. Pada halaman form yang dibuat, elemen input yang digunakan mencakup TextFormField untuk input seperti nama, deskripsi, dan harga. Selain itu, terdapat ElevatedButton untuk mengirim data form.
+   b. Beberapa elemen input lain di Flutter yang tidak digunakan pada tugas ini adalah Slider, Switch, dan Radio. Slider cocok untuk input berbentuk rentang nilai, Switch untuk pilihan biner seperti on/off, dan Radio untuk pilihan tunggal dari beberapa opsi.
+
+4. 
+Pengaturan Tema (Theme) dalam Aplikasi Flutter  
+   a. Tema diatur menggunakan ThemeData di dalam MaterialApp, yang memungkinkan pengaturan warna utama (primarySwatch), warna aksen (accentColor), dan gaya teks secara menyeluruh untuk aplikasi. Dengan tema, tampilan aplikasi bisa konsisten di seluruh halaman.
+   b. Pada proyek ini, tema diimplementasikan dengan mengatur primarySwatch untuk warna utama dan accentColor untuk warna tambahan, sehingga tampilan aplikasi selaras dengan desain yang diinginkan.
+
+5. 
+Menangani Navigasi dalam Aplikasi dengan Banyak Halaman  
+   a. Untuk menangani navigasi di aplikasi ini, saya menggunakan Navigator.push, Navigator.pushReplacement, dan Navigator.pop. Navigator.push digunakan untuk membuka halaman baru dan menambahkannya ke dalam stack, sehingga memungkinkan pengguna kembali ke halaman sebelumnya dengan tombol "back".
+   b. Navigator.pushReplacement digunakan untuk mengganti halaman saat ini dengan halaman baru, seperti saat berpindah dari layar login ke halaman utama, agar halaman sebelumnya dihapus dari stack.
+   c. Navigator.pop digunakan untuk menutup halaman saat ini dan kembali ke halaman sebelumnya, biasanya saat pengguna selesai mengisi form atau melihat detail.  
+   
+   Dengan kombinasi metode ini, aplikasi memiliki alur navigasi yang fleksibel dan intuitif, sehingga pengguna dapat dengan mudah berpindah antar halaman sesuai dengan kebutuhan aplikasi.
