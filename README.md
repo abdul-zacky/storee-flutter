@@ -101,3 +101,90 @@ Menangani Navigasi dalam Aplikasi dengan Banyak Halaman
    c. Navigator.pop digunakan untuk menutup halaman saat ini dan kembali ke halaman sebelumnya, biasanya saat pengguna selesai mengisi form atau melihat detail.  
    
    Dengan kombinasi metode ini, aplikasi memiliki alur navigasi yang fleksibel dan intuitif, sehingga pengguna dapat dengan mudah berpindah antar halaman sesuai dengan kebutuhan aplikasi.
+
+
+
+Tugas 9
+1. Mengapa perlu membuat model untuk pengambilan atau pengiriman data JSON?  
+   Model digunakan untuk mempermudah pengelolaan data yang diterima atau dikirim dalam format JSON jadi kita bisa mengonversi data JSON menjadi objek Dart yang lebih terstruktur dan mudah digunakan dalam aplikasi. Tanpa model, kita tetap bisa mengelola data JSON, tetapi prosesnya menjadi lebih rumit dan rawan error. Model membantu menjaga konsistensi dan memudahkan debugging serta pemeliharaan kode.
+
+2. Fungsi dari library http yang digunakan pada tugas ini  
+   Library http berfungsi sebagai alat untuk berkomunikasi dengan server melalui protokol HTTP. Pada tugas ini, library tersebut digunakan untuk melakukan permintaan (request) seperti GET atau POST ke backend (Django) dan menerima respons dari server. Contohnya, library ini memungkinkan Flutter mengambil daftar produk atau mengirim data login ke server.
+
+3. Fungsi dari CookieRequest dan alasan penggunaannya di seluruh komponen  
+   CookieRequest adalah class untuk menangani autentikasi berbasis cookie. Setelah user berhasil login, server Django mengirimkan cookie autentikasi sebagai respons. CookieRequest menyimpan cookie ini sehingga setiap permintaan berikutnya dari Flutter dapat menyertakan cookie tersebut untuk menjaga sesi user tetap aktif. Instance CookieRequest perlu dibagikan ke semua komponen di aplikasi agar setiap halaman dapat mengakses status autentikasi tanpa memerlukan login ulang.
+
+4. Mekanisme pengiriman data dari input hingga ditampilkan di Flutter  
+   - Input Data: User memasukkan data melalui UI di Flutter, misalnya detail produk.  
+   - Pengiriman Data ke Server: Data dikirimkan ke backend Django menggunakan http.post atau CookieRequest.post dalam format JSON.  
+   - Proses di Backend: Django memproses data tersebut, misalnya menyimpannya ke database atau memvalidasi data.  
+   - Respon dari Server: Django mengirimkan respon (biasanya dalam format JSON) kembali ke Flutter, berisi hasil operasi (misalnya, data yang disimpan atau pesan sukses).  
+   - Menampilkan Data: Flutter mem-parsing respon JSON menjadi objek yang terstruktur (berbasis model) dan menampilkannya di UI aplikasi.
+
+5. Mekanisme autentikasi (login, register, logout)  
+   - Register:  
+     User memasukkan data akun di Flutter, seperti username dan password. Data ini dikirim ke Django melalui http.post. Django memvalidasi data tersebut (misalnya, memastikan password memenuhi kriteria) dan menyimpan akun baru di database. Jika validasi berhasil, Django mengirimkan respons ke Flutter bahwa proses pendaftaran sukses.  
+   - Login:  
+     User memasukkan username dan password di Flutter, yang kemudian dikirimkan ke Django melalui http.post. Django mencocokkan data dengan database. Jika berhasil, Django mengirimkan cookie autentikasi kepada Flutter sebagai tanda user berhasil login. Cookie ini disimpan di CookieRequest untuk digunakan pada permintaan berikutnya.  
+   - Logout:  
+     User memilih logout di aplikasi. Flutter mengirimkan permintaan logout ke Django. Django menghapus sesi autentikasi user dan mengirimkan respon sukses ke Flutter. Setelah logout, cookie autentikasi dihapus, sehingga user perlu login ulang untuk mengakses fitur tertentu.
+
+6. 
+ a. Setup Autentikasi pada Django untuk Flutter
+ a.a. Membuat Django App
+- Saya membuat app baru bernama authentication di Django dengan perintah python manage.py startapp authentication
+  
+- Kemudian, saya menambahkan authentication ke INSTALLED_APPS di settings.py untuk mendaftarkan app ini agar Django mengenalinya.
+
+ a.b. Instalasi django-cors-headers
+- Saya menginstal library django-cors-headers dengan perintah pip install django-cors-headers
+- Library ini penting agar Django dapat menerima request dari Flutter
+ a.c. Konfigurasi CORS di settings.py
+- Saya menambahkan:
+  CORS_ALLOW_ALL_ORIGINS = True
+  CORS_ALLOW_CREDENTIALS = True
+  CSRF_COOKIE_SECURE = True
+  SESSION_COOKIE_SECURE = True
+  CSRF_COOKIE_SAMESITE = 'None'
+  SESSION_COOKIE_SAMESITE = 'None'
+ a.d. Konfigurasi ALLOWED_HOSTS
+- Menambahkan 10.0.2.2 ke ALLOWED_HOSTS agar emulator Android bisa mengakses server Django.
+ b. Implementasi Endpoint Login
+ b.a. Fungsi Login
+- Saya membuat view login di authentication/views.py:
+  - Fungsi ini mengecek username dan password menggunakan authenticate dari Django.
+  - Jika valid, user akan login, dan Django mengembalikan JSON respons yang berisi status login dan username.
+ b.b. URL Routing
+- Saya menambahkan endpoint login ke authentication/urls.py:
+  from authentication.views import login
+  urlpatterns = [path('login/', login, name='login')]
+ b.c. Testing Login
+- Saya mencoba mengakses endpoint ini melalui Postman dengan mengirim username dan password, memastikan respons JSON sesuai.
+ c. Integrasi dengan Flutter
+ c.a. Setup Provider dan CookieRequest
+- Di main.dart, saya wrap MaterialApp dengan Provider
+ c.b. Halaman Login
+- Saya membuat halaman login.dart:
+ d. Setup Register pada Django
+ d.a. Fungsi Register
+- Membuat fungsi register di Django:
+  - Fungsi ini menerima data POST berupa username, password1, dan password2.
+  - Mengecek kesesuaian password dan apakah username sudah ada.
+  - Jika valid, membuat user baru menggunakan User.objects.create_user().
+
+ d.b. URL Routing
+- Menambahkan endpoint register di authentication/urls.py:
+ e. Integrasi Halaman Register di Flutter
+- Membuat halaman register.dart:
+  - Mirip dengan login, tetapi mengirimkan username, password1, dan password2 ke endpoint register/.
+  - Jika sukses, aplikasi menavigasi ke halaman login.
+ f. Fetch Data dari Django ke Flutter
+ f.a. Fungsi Fetch di Flutter
+- Di Flutter, saya membuat fungsi fetch data JSON dari endpoint Django
+ f.b. Tampilan List
+- Membuat widget ListView.builder di Flutter untuk menampilkan data produk dalam daftar.
+ g. Logout
+ g.a. Endpoint Logout di Django
+- Membuat fungsi logout:
+ g.b. Implementasi Logout di Flutter
+- Menambahkan opsi logout di menu, menghapus cookie, dan menavigasi kembali ke halaman login.

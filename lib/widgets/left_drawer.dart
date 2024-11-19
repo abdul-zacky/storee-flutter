@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:storee/screens/list_product.dart';
 import 'package:storee/screens/menu.dart';
 import 'package:storee/screens/product_form.dart';
 
@@ -17,7 +18,7 @@ class LeftDrawer extends StatelessWidget {
             child: const Column(
               children: [
                 Text(
-                  'Mental Health Tracker',
+                  'Storee',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 24,
@@ -51,8 +52,8 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.mood),
-            title: const Text('Tambah Mood'),
+            leading: const Icon(Icons.production_quantity_limits),
+            title: const Text('Tambah Product'),
             // Bagian redirection ke MoodEntryFormPage
             onTap: () {
               Navigator.pushReplacement(
@@ -60,6 +61,17 @@ class LeftDrawer extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => ProductFormPage(),
                   ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_reaction_rounded),
+            title: const Text('Daftar Product'),
+            onTap: () {
+              // Route menu ke halaman mood
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProductPage()),
+              );
             },
           ),
         ],
